@@ -1,5 +1,6 @@
 var dayHourHeatmap = require('./day-hour-heatmap');
 var d3 = require('d3');
+var MG = require('metrics-graphics');
 
 d3.json('../me_eri.json', function(err, data) {
   var c = 'Carlos';
@@ -37,14 +38,41 @@ d3.json('../me_eri.json', function(err, data) {
     return item.from + ': ' + truncate(item.text, 20);
   }
 
-  data.filter(function(item) {
+  data = data.filter(function(item) {
     return (item.from === c && item.to === e) ||
       (item.from === e && item.to === c);
-  }).forEach(function(item) {
+  });
+
+  data.forEach(function(item) {
     var date = new Date(item.date + TIMEZONE);
     entries[date.getDay()][date.getHours()].value++;
     entries[date.getDay()][date.getHours()].title += renderMessage(item) + '\n';
   });
 
   dayHourHeatmap(d3.select('#foo'), result);
+
+  // kind of cheating with the double %L %L
+  var originalFormat = d3.time.format('%Y-%m-%dT%H:%M:%S.%L%L');
+  var dayFormat = d3.time.format('%Y-%m-%d');
+  data = d3.nest()
+    .key(function(item) { return dayFormat(originalFormat.parse(item.date)); })
+    .rollup(function(items) { return items.length; })
+    .entries(data);
+  console.log(data)
+
+  data = MG.convert.date(data, 'key');
+  MG.data_graphic({
+      //title: "Line Chart",
+      //description: "",
+      interpolate: 'basic',
+      missing_is_zero: true,
+      data: data,
+      width: 600,
+      height: 200,
+      right: 40,
+      target: document.getElementById('foo2'),
+      x_accessor: 'key',
+      y_accessor: 'values'
+  });
+
 });

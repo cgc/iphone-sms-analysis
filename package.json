@@ -16,6 +16,7 @@
     "gulp": "^3.9.0",
     "gulp-cli": "^0.2.0",
     "gulp-util": "^3.0.5",
+    "metrics-graphics": "^2.5.0",
     "morgan": "^1.6.0",
     "serve-static": "^1.9.3",
     "vinyl-buffer": "^1.0.0",
