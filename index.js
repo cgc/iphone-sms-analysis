@@ -1,6 +1,7 @@
 var dayHourHeatmap = require('./day-hour-heatmap');
 var d3 = require('d3');
 var MG = require('metrics-graphics');
+var d3Cloud = require('./d3-cloud');
 
 d3.json('../me_eri.json', function(err, data) {
   var c = 'Carlos';
@@ -51,6 +52,23 @@ d3.json('../me_eri.json', function(err, data) {
 
   dayHourHeatmap(d3.select('#foo'), result);
 
+  metricsGraphics(data);
+
+  wordCloud(c, data, d3.select('#c-cloud'));
+  wordCloud(e, data, d3.select('#e-cloud'));
+});
+
+function wordCloud(from, data, d3root) {
+  var everything = data.filter(function(item) {
+    return item.from === from;
+  }).map(function(item) {
+    return item.text;
+  }).join(' ');
+
+  d3Cloud(d3root, everything);
+}
+
+function metricsGraphics(data) {
   // kind of cheating with the double %L %L
   var originalFormat = d3.time.format('%Y-%m-%dT%H:%M:%S.%L%L');
   var dayFormat = d3.time.format('%Y-%m-%d');
@@ -74,5 +92,4 @@ d3.json('../me_eri.json', function(err, data) {
       x_accessor: 'key',
       y_accessor: 'values'
   });
-
-});
+}

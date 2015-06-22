@@ -12,12 +12,14 @@
   "dependencies": {
     "browserify": "^10.2.4",
     "d3": "^3.5.5",
+    "d3.layout.cloud": "^1.0.5",
     "express": "^4.12.4",
     "gulp": "^3.9.0",
     "gulp-cli": "^0.2.0",
     "gulp-util": "^3.0.5",
     "metrics-graphics": "^2.5.0",
     "morgan": "^1.6.0",
+    "natural": "^0.2.1",
     "serve-static": "^1.9.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
